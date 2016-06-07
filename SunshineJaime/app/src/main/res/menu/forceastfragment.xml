@@ -5,10 +5,10 @@
     tools:context=".MainActivity">
 
     <!--orderInCategory helps set order, 1 first, 2 second, 3 third, etc-->
+    <!--showAction is set to never, only shown in the 3 dots-->
     <item
-        android:id="@+id/action_settings"
-        android:title="@string/action_settings"
-        android:orderInCategory="100"
-        app:showAsAction="never" />
+        android:id="@+id/action_refresh"
+        android:title="Refresh"
+        app:showAsAction="never"/>
 
 </menu>

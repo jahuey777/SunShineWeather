@@ -1,24 +1,13 @@
 package com.example.jaimejahuey.sunshinejaime;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-
-import java.util.ArrayList;
-import java.util.List;
 
 ////http://api.openweathermap.org/data/2.5/forecast/daily?q=94043&units=metric&cnt=7
 //weather api key fe21a4b27caaecf3baa6d3b396b1a02f
 //http://api.openweathermap.org/data/2.5/forecast/daily?q=BoilingSprings,US&units=metric&cnt=7&APPID=fe21a4b27caaecf3baa6d3b396b1a02f
-
 
 /**
  * Created by jaimejahuey on 6/2/16.
@@ -31,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new PlaceholderFragment())
+                    .add(R.id.container, new ForecastFragment())
                     .commit();
         }
     }
@@ -56,35 +45,5 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    /**
-     * A placeholder fragment containing a simple view.
-     */
-    public static class PlaceholderFragment extends Fragment {
-
-        public PlaceholderFragment() {
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-
-            List<String> weatherList = new ArrayList<>();
-            weatherList.add("Today - Sunny - 88/63");
-            weatherList.add("Tomorrow - Sunny - 90/69");
-            weatherList.add("Sunday - Sunny - 93/59");
-            weatherList.add("Monday - Sunny - 82/58");
-            weatherList.add("Tuesday - Sunny - 84/63");
-
-            //Context, id of listitem layoug, textivw, and data
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), R.layout.list_item_forecast, R.id.list_item_forecast_textview, weatherList);
-            ListView listView = (ListView) rootView.findViewById(R.id.list_view_forecast);
-
-            listView.setAdapter(adapter);
-
-            return rootView;
-        }
     }
 }
