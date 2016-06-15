@@ -1,8 +1,12 @@
 package com.example.jaimejahuey.sunshinejaime;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -19,6 +23,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Log.v("LifeCycle: " , "onCreate");
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.container, new ForecastFragment())
@@ -46,7 +52,52 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
             return true;
         }
+        else if (id == R.id.action_map){
+            //Grabbing the zip code location
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+            String zip = sharedPreferences.getString(getString(R.string.pref_location_key), getString(R.string.pref_location_default));
 
+            Uri geoLocation = Uri.parse("geo:0,0?").buildUpon().appendQueryParameter("q", zip).build();
+
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(geoLocation);
+            if (intent.resolveActivity(getPackageManager()) != null) {
+                startActivity(intent);
+            }
+            else{
+                Log.v("Couldn't launch map."," No map App installed");
+            }
+        }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.v("LifeCycle: " , "onPause");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.v("LifeCycle: " , "onResume");
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.v("LifeCycle: " , "onStart");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.v("LifeCycle: " , "onStop");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.v("LifeCycle: " , "onDestroy");
     }
 }

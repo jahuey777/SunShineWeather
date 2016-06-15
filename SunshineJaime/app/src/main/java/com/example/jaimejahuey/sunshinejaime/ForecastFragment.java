@@ -78,7 +78,7 @@ public class ForecastFragment extends Fragment {
         weatherList.add("Monday - Sunny - 82/58");
         weatherList.add("Tuesday - Sunny - 84/63");
 
-        //Context, id of listitem layoug, textivw, and data
+        //Context, id of listitem layoug, textivw, and com.example.jaimejahuey.sunshinejaime.data
         forecastAdapter = new ArrayAdapter<String>(getActivity(), R.layout.list_item_forecast, R.id.list_item_forecast_textview, weatherList);
         ListView listView = (ListView) rootView.findViewById(R.id.list_view_forecast);
 
@@ -117,19 +117,28 @@ public class ForecastFragment extends Fragment {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_refresh) {
-            FetchWeatherTask weatherTask = new FetchWeatherTask();
-
-            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-            String zip = preferences.getString(String.valueOf(R.string.pref_location_key), true);
-
-            Log.v("Zip COde " , "" + zip);
-
-            weatherTask.execute(zip);
-
+            updateWeather();
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void updateWeather(){
+        FetchWeatherTask weatherTask = new FetchWeatherTask();
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String zip = preferences.getString(getString(R.string.pref_location_key), getString(R.string.pref_location_default));
+
+        Log.v("Zip Code " , "" + zip);
+
+        weatherTask.execute(zip);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        updateWeather();
     }
 
     public class FetchWeatherTask extends AsyncTask<String,Void,String[]>{
@@ -145,7 +154,7 @@ public class ForecastFragment extends Fragment {
             final String DAYS_PARAM = "cnt";
 
             try {
-                final String BASE_URL = "http://api.openweathermap.org/data/2.5/forecast/daily?";
+                final String BASE_URL = "http://api.openweathermap.org/com.example.jaimejahuey.sunshinejaime.data/2.5/forecast/daily?";
                 //URI Builder instead, makes it easier to change the parameters and such for the url.
                 //params[0] is the string we are passing in, or the zip code
 
@@ -259,7 +268,7 @@ public class ForecastFragment extends Fragment {
 
             } catch (IOException e) {
                 Log.e("PlaceholderFragment", "Error ", e);
-                // If the code didn't successfully get the weather data, there's no point in attemping
+                // If the code didn't successfully get the weather com.example.jaimejahuey.sunshinejaime.data, there's no point in attemping
                 // to parse it.
                 return null;
             } finally{
@@ -297,6 +306,21 @@ public class ForecastFragment extends Fragment {
          * Prepare the weather high/lows for presentation.
          */
         private String formatHighLows(double high, double low) {
+            //Check the preferences to see which we need to do
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+            String uniType = sharedPreferences.getString(getString(R.string.pref_unit_key),getString(R.string.pref_units_metric));
+
+            Log.d("Unit type:", uniType);
+
+
+            if(uniType.equals(getString(R.string.pref_units_imperial))){
+                high = (high*1.8) + 32;
+                low = (low*1.8) + 32;
+            }
+            else if(!uniType.equals(getString(R.string.pref_units_metric))){
+                Log.d("Unite type not found :", uniType);
+            }
+
             // For presentation, assume the user doesn't care about tenths of a degree.
             long roundedHigh = Math.round(high);
             long roundedLow = Math.round(low);
@@ -307,7 +331,7 @@ public class ForecastFragment extends Fragment {
 
         /**
          * Take the String representing the complete forecast in JSON Format and
-         * pull out the data we need to construct the Strings needed for the wireframes.
+         * pull out the com.example.jaimejahuey.sunshinejaime.data we need to construct the Strings needed for the wireframes.
          *
          * Fortunately parsing is easy:  constructor takes the JSON string and converts it
          * into an Object hierarchy for us.
@@ -328,10 +352,10 @@ public class ForecastFragment extends Fragment {
 
             //THIS IS DEPRECATED, USING GREGORIAN INSTEAD
             /* OWM returns daily forecasts based upon the local time of the city that is being
-            // asked for, which means that we need to know the GMT offset to translate this data
+            // asked for, which means that we need to know the GMT offset to translate this com.example.jaimejahuey.sunshinejaime.data
             // properly.
 
-            // Since this data is also sent in-order and the first day is always the
+            // Since this com.example.jaimejahuey.sunshinejaime.data is also sent in-order and the first day is always the
             // current day, we're going to take advantage of that to get a nice
             // normalized UTC date for all of our weather.
 
@@ -400,8 +424,9 @@ public class ForecastFragment extends Fragment {
             {
                 forecastAdapter.clear();
                 //Log.v("Strings", "are null");
+
+                forecastAdapter.addAll(strings);
             }
-            forecastAdapter.addAll(strings);
         }
     }
 }
