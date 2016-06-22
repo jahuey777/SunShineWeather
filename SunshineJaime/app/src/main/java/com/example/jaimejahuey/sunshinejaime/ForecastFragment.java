@@ -154,15 +154,21 @@ public class ForecastFragment extends Fragment {
             final String DAYS_PARAM = "cnt";
 
             try {
-                final String BASE_URL = "http://api.openweathermap.org/com.example.jaimejahuey.sunshinejaime.data/2.5/forecast/daily?";
+                final String BASE_URL = "http://api.openweathermap.org/data/2.5/forecast/daily?";
                 //URI Builder instead, makes it easier to change the parameters and such for the url.
                 //params[0] is the string we are passing in, or the zip code
 
-                Uri build = Uri.parse(BASE_URL).buildUpon().appendQueryParameter("q", params[0])
+                //Fixing the zip code
+                String zipCode = params[0] + ",us";
+
+                Uri build = Uri.parse(BASE_URL).buildUpon().appendQueryParameter("q", zipCode)
                         .appendQueryParameter("mode", "json").appendQueryParameter("units", "metric")
                         .appendQueryParameter(DAYS_PARAM, Integer.toString(numDays)).appendQueryParameter("APPID","fe21a4b27caaecf3baa6d3b396b1a02f").build();
 
                 URL url = new URL(build.toString());
+
+                            Log.v("URL " , " " + build.toString());
+
 
                 urlConnection = (HttpURLConnection) url.openConnection();
 
