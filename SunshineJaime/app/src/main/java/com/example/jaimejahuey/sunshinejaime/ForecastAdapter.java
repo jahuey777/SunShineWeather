@@ -63,7 +63,7 @@ public class ForecastAdapter extends CursorAdapter {
 
     /*
         This is where we fill-in the views with the contents of the cursor.
-        you are binding the values in the cursor to the view 
+        you are binding the values in the cursor to the view
      */
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
