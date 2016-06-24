@@ -22,10 +22,13 @@ public class DetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
-        Intent intent = getIntent();
-        String info = intent.getStringExtra("WEATHERINFO");
+//        Intent intent = getIntent();
+//        String info = intent.getStringExtra("WEATHERINFO");
 
-        Log.v("Extra" , " " + info);
+//        Log.v("Extra" , " " + info);
+//        if (intent != null) {
+//            mForecastStr = intent.getDataString();
+//        }
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
@@ -82,7 +85,10 @@ public class DetailActivity extends AppCompatActivity {
             View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
 
             Intent intent = getActivity().getIntent();
-            forecastInfo = intent.getStringExtra("WEATHERINFO");
+            if (intent != null) {
+                forecastInfo = intent.getDataString();
+            }
+//            forecastInfo = intent.getStringExtra("WEATHERINFO");
 
             ((TextView) rootView.findViewById(R.id.forecastInfo)).setText(forecastInfo);
 

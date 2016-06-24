@@ -320,7 +320,7 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
 //                } while (cur.moveToNext());
 //            }
 
-            Log.d(LOG_TAG, "FetchWeatherTask Complete. " + cVVector.size() + " Inserted");
+            Log.d(LOG_TAG, "FetchWeatherTask Complete. 2 " + cVVector.size() + " Inserted");
 
 //            String[] resultStrs = convertContentValuesToUXFormat(cVVector);
   /*          return resultStrs;
