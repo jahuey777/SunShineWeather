@@ -10,6 +10,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.example.jaimejahuey.sunshinejaime.data.Utility;
+
 ////http://api.openweathermap.org/data/2.5/forecast/daily?q=94043&units=metric&cnt=7
 //weather api key fe21a4b27caaecf3baa6d3b396b1a02f
 //http://api.openweathermap.org/data/2.5/forecast/daily?q=BoilingSprings,US&units=metric&cnt=7&APPID=fe21a4b27caaecf3baa6d3b396b1a02f
@@ -19,15 +21,21 @@ import android.view.MenuItem;
  */
 public class MainActivity extends AppCompatActivity {
 
+    private String mLocation;
+    private final String FORECASTFRAGMENT_TAG = "FFTAG";
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mLocation = Utility.getPreferredLocation(this);
+
         setContentView(R.layout.activity_main);
 
         Log.v("LifeCycle: " , "onCreate");
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new ForecastFragment())
+                    .add(R.id.container, new ForecastFragment(), FORECASTFRAGMENT_TAG)
                     .commit();
         }
     }
@@ -81,7 +89,18 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         Log.v("LifeCycle: " , "onResume");
+
+        String location = Utility.getPreferredLocation( this );
+        // update the location in our second pane using the fragment manager
+        if (location != null && !location.equals(mLocation)) {
+            ForecastFragment ff = (ForecastFragment)getSupportFragmentManager().findFragmentByTag(FORECASTFRAGMENT_TAG);
+            if ( null != ff ) {
+                ff.onLocationChanged();
+            }
+            mLocation = location;
+        }
     }
+
 
     @Override
     protected void onStart() {

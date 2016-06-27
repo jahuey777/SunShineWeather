@@ -63,11 +63,11 @@ import java.util.UUID;
 public class ForecastFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
 
     private ForecastAdapter forecastAdapter;
-    private static final int MY_LOADER_ID = 1;
+    private static final int MY_LOADER_ID = 0;
 
     // For the forecast view we're showing only a small subset of the stored data.
     // Specify the columns we need.
-    private static final String[] FORECAST_COLUMNS = {
+    public static final String[] FORECAST_COLUMNS = {
             // In this case the id needs to be fully qualified with a table name, since
             // the content provider joins the location & weather tables in the background
             // (both have an _id column)
@@ -109,8 +109,14 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         getActivity().getSupportLoaderManager().initLoader(MY_LOADER_ID, null, this);
+
         super.onActivityCreated(savedInstanceState);
 
+    }
+    // since we read the location when we create the loader, all we need to do is restart things
+    void onLocationChanged( ) {
+        updateWeather();
+        getLoaderManager().restartLoader(MY_LOADER_ID, null, this);
     }
 
     @Override
@@ -122,6 +128,7 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
 
         ListView listView = (ListView) rootView.findViewById(R.id.list_view_forecast);
         listView.setAdapter(forecastAdapter);
+
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
@@ -232,14 +239,13 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
         String sortOrder = WeatherContract.WeatherEntry.COLUMN_DATE + " ASC";
         Uri weatherForLocationUri = WeatherContract.WeatherEntry.buildWeatherLocationWithStartDate(locationSetting,System.currentTimeMillis());
 
-        Log.v("Loader called " , " 2");
-
         CursorLoader cursorLoader = new CursorLoader(getContext(),
                 weatherForLocationUri,
                 FORECAST_COLUMNS,
                 null,
                 null,
                 sortOrder);
+
         return cursorLoader;
     }
 
@@ -247,6 +253,7 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         forecastAdapter.swapCursor(data);
+
     }
 
 
