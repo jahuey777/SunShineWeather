@@ -257,7 +257,7 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
     }
 
 
-    //Remove all references to cursoer data
+    //Remove all references to cursor data
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         forecastAdapter.swapCursor(null);
