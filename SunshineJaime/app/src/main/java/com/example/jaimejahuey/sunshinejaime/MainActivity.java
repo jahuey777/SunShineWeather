@@ -31,8 +31,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         mLocation = Utility.getPreferredLocation(this);
 
-        setContentView(R.layout.activity_main);
-
         Log.v("LifeCycle: " , "onCreate");
 //        if (savedInstanceState == null) {
 //            getSupportFragmentManager().beginTransaction()

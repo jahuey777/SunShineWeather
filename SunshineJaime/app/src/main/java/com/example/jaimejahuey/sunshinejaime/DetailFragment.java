@@ -25,6 +25,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.jaimejahuey.sunshinejaime.data.Utility;
+import com.example.jaimejahuey.sunshinejaime.data.WeatherContract.WeatherEntry;
+import com.example.jaimejahuey.sunshinejaime.data.WeatherContract;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -38,17 +40,33 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     private static final int MY_LOADER_ID = 1;
     String intentURI;
 
+    private static final String[] DETAIL_COLUMNS = {
+            WeatherEntry.TABLE_NAME + "." + WeatherEntry._ID,
+            WeatherEntry.COLUMN_DATE,
+            WeatherEntry.COLUMN_SHORT_DESC,
+            WeatherEntry.COLUMN_MAX_TEMP,
+            WeatherEntry.COLUMN_MIN_TEMP,
+            WeatherEntry.COLUMN_HUMIDITY,
+            WeatherEntry.COLUMN_PRESSURE,
+            WeatherEntry.COLUMN_WIND_SPEED,
+            WeatherEntry.COLUMN_DEGREES,
+            WeatherEntry.COLUMN_WEATHER_ID,
+            // This works because the WeatherProvider returns location data joined with
+            // weather data, even though they're stored in two different tables.
+            WeatherContract.LocationEntry.COLUMN_LOCATION_SETTING
+    };
     //Tied with the details_columns. If details_columns changes then these mucst change as weell
-    static final int COL_WEATHER_ID = 0;
-    static final int COL_WEATHER_DATE = 1;
-    static final int COL_WEATHER_DESC = 2;
-    static final int COL_WEATHER_MAX_TEMP = 3;
-    static final int COL_WEATHER_MIN_TEMP = 4;
+    public static final int COL_WEATHER_ID = 0;
+    public static final int COL_WEATHER_DATE = 1;
+    public static final int COL_WEATHER_DESC = 2;
+    public static final int COL_WEATHER_MAX_TEMP = 3;
+    public static final int COL_WEATHER_MIN_TEMP = 4;
     public static final int COL_WEATHER_HUMIDITY = 5;
     public static final int COL_WEATHER_PRESSURE = 6;
     public static final int COL_WEATHER_WIND_SPEED = 7;
     public static final int COL_WEATHER_DEGREES = 8;
     public static final int COL_WEATHER_CONDITION_ID =9;
+
     private ImageView mIconView;
     private TextView mFriendlyDateView;
     private TextView mDateView;
@@ -139,7 +157,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 
         CursorLoader cursorLoader = new CursorLoader(getContext(),
                 builtUri,
-                ForecastFragment.FORECAST_COLUMNS,
+                DETAIL_COLUMNS,
                 null,
                 null,
                 null);
