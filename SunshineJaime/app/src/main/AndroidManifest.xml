@@ -32,6 +32,9 @@
         <!--To give acess to the provider set exported to true, the other app just needs the uri.
         can limit persmissions use <permissions>-->
 
+        <service android:name=".service.SunshineService"/>
+        <receiver android:name=".service.SunshineService$AlarmReceiver"/>
+
     </application>
 
 

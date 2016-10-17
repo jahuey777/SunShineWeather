@@ -426,13 +426,8 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
             }
         }
 
-//        try {
-//            return getWeatherDataFromJson(forecastJsonStr, locationQuery);
-//        } catch (JSONException e) {
-//            Log.e(LOG_TAG, e.getMessage(), e);
-//            e.printStackTrace();
-//        }
-        // This will only happen if there was an error getting or parsing the forecast.
+        Log.v(" closing stream", " here");
+
         return null;
     }
 

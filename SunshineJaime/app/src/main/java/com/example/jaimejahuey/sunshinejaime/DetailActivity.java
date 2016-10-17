@@ -34,15 +34,21 @@ public class DetailActivity extends AppCompatActivity {
 
 //        Intent intent = getIntent();
 //        String info = intent.getStringExtra("WEATHERINFO");
-
+//
 //        Log.v("Extra" , " " + info);
 //        if (intent != null) {
 //            mForecastStr = intent.getDataString();
 //        }
 
         if (savedInstanceState == null) {
+            Bundle arguments = new Bundle();
+            arguments.putParcelable(DetailFragment.DETAIL_URI, getIntent().getData());
+
+            DetailFragment fragment = new DetailFragment();
+            fragment.setArguments(arguments);
+
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.weather_detail_container, new DetailFragment())
+                    .add(R.id.weather_detail_container, fragment)
                     .commit();
         }
     }
